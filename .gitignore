@@ -3,6 +3,7 @@ node_modules/
 **/node_modules/
 dist/
 *.local
+**/.vercel/
 
 /package-lock.json
 /乘客意向确认页3级
