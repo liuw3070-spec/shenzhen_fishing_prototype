@@ -1,0 +1,116 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* ════════════════════════════════════════════════════════════
+   iOS Safe Area & Viewport Fix for iPhone 16 Pro / 17 Pro
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Safe Area Insets - iOS 11+ */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+
+  /* Phone Frame Dimensions (iPhone 16 Pro / 17 Pro) */
+  --phone-width: 402px;
+  --phone-height: 874px;
+
+  /* Dynamic viewport height (fixes 100vh issue on mobile Safari) */
+  --vh: 1vh;
+}
+
+/* Fix for mobile Safari 100vh issue */
+@supports (height: 100dvh) {
+  :root {
+    --vh: 1dvh;
+  }
+}
+
+/* HTML & Body Reset */
+html {
+  font-size: var(--font-size);
+  height: 100%;
+  height: calc(var(--vh) * 100);
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  padding-top: var(--safe-area-top);
+  padding-bottom: var(--safe-area-bottom);
+  padding-left: var(--safe-area-left);
+  padding-right: var(--safe-area-right);
+  min-height: 100%;
+  min-height: calc(var(--vh) * 100);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  height: calc(var(--vh) * 100);
+  overflow: hidden;
+}
+
+/* ════════════════════════════════════════════════════════════
+   Phone Container - Responsive Scaling
+   ════════════════════════════════════════════════════════════ */
+
+.phone-viewport {
+  position: relative;
+  width: 100%;
+  max-width: var(--phone-width);
+  height: auto;
+  min-height: var(--phone-height);
+  max-height: calc(var(--vh) * 100);
+  margin: 0 auto;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* When viewport is smaller than phone frame, scale down */
+@media screen and (max-height: 874px) and (max-width: 402px) {
+  .phone-viewport {
+    transform-origin: top center;
+    transform: scale(calc(100vh / 874));
+    width: var(--phone-width);
+    height: var(--phone-height);
+  }
+}
+
+/* Desktop: Show at exact size, centered */
+@media screen and (min-width: 500px) {
+  .phone-viewport {
+    width: var(--phone-width);
+    height: var(--phone-height);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Global Overflow & Scroll Fixes
+   ════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent overscroll bounce on iOS */
+html, body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix input zoom on iOS */
+@media screen and (max-width: 402px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
